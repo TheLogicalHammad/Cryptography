@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/the_boys_logo.webp') }}" type="image/x-icon">
+    <title>Cryptography</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="leftside">
+                <span>
+                    <img src="/static/images/the_boys_logo.webp" alt="Website Logo">
+                </span>
+            </div>
+            <div class="rightside">
+                <ul>
+                    <li id="li-affine" class="focus"><a>Affine</a></li>
+                    <li id="li-rsa" class=""><a>RSA</a></li>
+                    <li id="li-hashing" class=""><a>Hashing</a></li>
+                    <li id="li-fence" class=""><a>Fence Rail</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="backgrounds">
+        <img src="/static/images/flux.svg" class="background-image flux" alt="Flux Image">
+        <img src="/static/images/rainbow.svg" class="background-image rainbow" alt="Rainbow Image">
+        <img src="/static/images/blurry.svg" class="background-image blurry" alt="Blurry Image">
+    </div>
+    <main>
+        <div class="main affine">
+            <div class="mainLeft">
+                <h2>Affine Cipher</h2>
+                <label for="message" id="labelM" style="position: relative; font-weight: bold;">Enter your message</label>
+                <textarea name="message" id="message-affine"></textarea>
+                <label for="keyA" class="mt-15" id="labelA" style="position: relative; font-weight: bold;">Enter key 1 (2 - <span id="upperLimitA"></span>)
+                </label>
+                <input type="number" id="keyA" value="2" min="0" max="100">
+                <label for="keyB" class="mt-15" id="labelB" style="position: relative; font-weight: bold;">Enter key 2 (greater than 0)</label>
+                <input type="number" id="keyB" value="1" min="0" max="10000">
+
+                <div class="formButtons">
+                    <div>
+                        <button class="encryptBtn" onclick="sendAffine(`e`)">Encrypt</button>
+                        <button class="decryptBtn" onclick="sendAffine(`d`)">Decrypt</button>
+                    </div>
+                </div>
+            </div>
+            <label class="line"></label>
+            <div class="mainRight">
+                <div class="output heading">The <span id="encORdec"></span> message</div>
+                <div class="output message">
+                    <div class="outputMessage" id="outputAffineMessage">
+
+                    </div>
+                </div>
+                <div class="buttonContainer">
+                    <button id="CoutputAffineMessage" onclick="copyToClipBoard('outputAffineMessage')">Copy</button>
+                </div>
+            </div>
+        </div>
+        <div class="main rsa hidden">
+            <div class="mainLeft">
+                <h2>RSA Cipher</h2>
+                <div class="rsa-options">
+                    <h3 id="button-rsaAlgo">Algo</h3>
+                    <span class="vertical"></span>
+                    <h3 id="button-rsaKeys">Keys</h3>
+                    <span class="horizontal"></span>
+                </div>
+                <div class="rsa-algo">
+                    <label for="message" id="labelM" style="position: relative; font-weight: bold;">Enter your message</label>
+                    <textarea name="message" id="RSAmessage"></textarea>
+                    <label for="keyA" class="mt-15" id="labelA" style="position: relative; font-weight: bold;">Enter N
+                    </label>
+                    <input type="number" id="keyFinalN" value="2" min="0">
+                    <label for="keyB" class="mt-15" id="labelB" style="position: relative; font-weight: bold;">Enter E/D</label>
+                    <input type="number" id="keyFinalED" value="1" min="0">
+    
+                    <div class="formButtons">
+                        <div>
+                            <button class="encryptBtn" onclick="sendRSA(`e`)">Encrypt</button>
+                            <button class="decryptBtn" onclick="sendRSA(`d`)">Decrypt</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="rsa-keys hidden">
+                    <h3>Enter two prime numbers P & Q <span style="font-size: 14px; color: #b6b6b6; font-weight: normal; font-style: italic;">(greater than 200)</span></h3>
+                    <div class="prime-inputs">
+                        <input type="text" name="p" id="p" placeholder="P">
+                        <input type="text" name="q" id="q" placeholder="Q">
+                    </div>
+                    <!-- <button id="rsa-enter">Enter</button> -->
+                    <h3>Enter E <span style="font-size: 14px; color: #b6b6b6; font-weight: normal; font-style: italic;">(The program may ask for another if this is wrong)</span></h3>
+                    <div class="getting-e">
+                        <input type="text" name="e" id="e">
+                        <button id="rsa-check">Check</button>
+                    </div>
+                    
+                    <hr>
+                    <div class="keys-generated">
+                        <div class="public-keys">
+                            <h3>Public Keys</h3>
+                            <h4>N: <span class="keyN">0000</span></h4>
+                            <h4>E: <span class="keyE">0000</span></h4>
+                        </div>
+                        <div class="private-keys">
+                            <h3>Private Keys</h3>
+                            <h4>D: <span class="keyD">0000</span></h4>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <label class="line"></label>
+            <div class="mainRight">
+                <div class="output heading">The <span id="encORdec"></span> message</div>
+                <div class="output message">
+                    <div class="outputMessage" id="outputRSAMessage">
+
+                    </div>
+                </div>
+                <div class="buttonContainer">
+                    <button id="CoutputRSAMessage" onclick="copyToClipBoard('outputRSAMessage')">Copy</button>
+                </div>
+            </div>
+        </div>
+        <div class="main hashing hidden">
+            <div class="mainLeft">
+                <h2>SHA-512</h2>
+                <label for="message" id="labelM" style="position: relative; font-weight: bold;">Enter your message</label>
+                <textarea name="message" id="Hashmessage" placeholder="Four characters only"></textarea>
+
+                <div class="formButtons">
+                    <div>
+                        <button class="encryptBtn" onclick="sendHash()">Generate Hash</button>
+                    </div>
+                </div>
+            </div>
+            <label class="line"></label>
+            <div class="mainRight">
+                <div class="output heading">The <span id="encORdec"></span> message</div>
+                <div class="output message">
+                    <div class="outputMessage" id="outputHashMessage">
+
+                    </div>
+                </div>
+                <div class="buttonContainer">
+                    <button id="CoutputHashMessage" onclick="copyToClipBoard('outputHashMessage')">Copy</button>
+                </div>
+            </div>
+        </div>
+        <div class="main fence hidden">
+            <div class="mainLeft">
+                <h2>Fence Rail</h2>
+                <label for="message" id="labelM" style="position: relative; font-weight: bold;">Enter your message</label>
+                <textarea name="message" id="FenceMessage"></textarea>
+                <label for="keyA" class="mt-15" id="labelA" style="position: relative; font-weight: bold;">Enter number of rows
+                </label>
+                <input type="number" id="num_rows" value="3" min="1" max="10000">
+                <label for="keyB" class="mt-15" id="labelB" style="position: relative; font-weight: bold;">Enter number of orders</label>
+                <input type="number" id="times" value="1" min="1" max="10000">
+
+                <div class="formButtons">
+                    <div>
+                        <button class="encryptBtn" onclick="sendFence(`e`)">Encrypt</button>
+                        <button class="decryptBtn" onclick="sendFence(`d`)">Decrypt</button>
+                    </div>
+                </div>
+            </div>
+            <label class="line"></label>
+            <div class="mainRight">
+                <div class="output heading">The <span id="encORdec"></span> message</div>
+                <div class="output message">
+                    <div class="outputMessage" id="outputFenceMessage">
+
+                    </div>
+                </div>
+                <div class="buttonContainer">
+                    <button id="CoutputFenceMessage" onclick="copyToClipBoard('outputFenceMessage')">Copy</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}">
+    </script>
+    <script>
+        const M = {{lenM}};
+    </script>
+</body>
+</html>
